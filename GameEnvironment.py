@@ -32,7 +32,7 @@ class GameEnvironment(gym.Env):
         # stateを再計算
         self.state = self._convert_to_state(self.player_monsters, self.ai_monsters)
     
-        return self.state
+        return np.array(self.state)
         
     def render(self, mode='human'):
         # 現在の状態をテキストで表示する
@@ -151,13 +151,19 @@ class GameEnvironment(gym.Env):
     
         return damage_reward - damage_taken_reward + front_monster_advantage_reward
         
-    def step(self, action):
+   def step(self, action):
         # 次の状態と報酬を計算する
         next_states_and_probs = self.calculate_next_states_and_probabilities(action)
         next_state = self.select_randomly_based_on_probability(next_states_and_probs)
         reward = self.calculate_reward(next_state)
 
-        return next_state, reward
+        # ゲームが終了したかどうかを判断する
+        done = is_done(next_state)
+
+        # 追加情報（空の辞書）
+        info = {}
+
+        return np.array(next_state), reward, done, info
         
     def is_done(next_state):
         # 次の状態のモンスターの状態を取得
