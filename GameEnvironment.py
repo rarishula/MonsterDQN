@@ -151,7 +151,7 @@ class GameEnvironment(gym.Env):
     
         return damage_reward - damage_taken_reward + front_monster_advantage_reward
         
-   def step(self, action):
+    def step(self, action):
         # 次の状態と報酬を計算する
         next_states_and_probs = self.calculate_next_states_and_probabilities(action)
         next_state = self.select_randomly_based_on_probability(next_states_and_probs)
