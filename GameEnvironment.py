@@ -1,35 +1,35 @@
 class GameEnvironment(gym.Env):
     def __init__(self):
-        # ƒvƒŒƒCƒ„[‚ÆAI‚Ì‰Šúƒ‚ƒ“ƒXƒ^[‚ğİ’è
+        # ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨AIã®åˆæœŸãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã‚’è¨­å®š
         self.initial_player_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
         self.initial_ai_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
 
-        # ó‘ÔƒXƒy[ƒX‚ÌƒTƒCƒY‚ğİ’èiƒvƒŒƒCƒ„[‚ÆAI‚Ìƒ‚ƒ“ƒXƒ^[‚ğ‡‚í‚¹‚½”j
-        self.state_size = len(self.initial_player_monsters) * 2  # Šeƒ‚ƒ“ƒXƒ^[‚Í2‚Â‚Ì‘®«iƒ^ƒCƒv‚ÆHPj‚ğ‚Â
+        # çŠ¶æ…‹ã‚¹ãƒšãƒ¼ã‚¹ã®ã‚µã‚¤ã‚ºã‚’è¨­å®šï¼ˆãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨AIã®ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã‚’åˆã‚ã›ãŸæ•°ï¼‰
+        self.state_size = len(self.initial_player_monsters) * 2  # å„ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã¯2ã¤ã®å±æ€§ï¼ˆã‚¿ã‚¤ãƒ—ã¨HPï¼‰ã‚’æŒã¤
 
-        # ƒAƒNƒVƒ‡ƒ“ƒXƒy[ƒX‚ğİ’èiŒğ‘Ö‚ÆUŒ‚‚Ì‘I‘ğˆj
-        self.action_space = gym.spaces.Discrete(4)  # 4‚Â‚Ìs“®i2í—Ş‚ÌUŒ‚‚Æ2í—Ş‚ÌŒğ‘Öj   def random_action(self, player_monsters):
+        # ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¨­å®šï¼ˆäº¤æ›¿ã¨æ”»æ’ƒã®é¸æŠè‚¢ï¼‰
+        self.action_space = gym.spaces.Discrete(4)  # 4ã¤ã®è¡Œå‹•ï¼ˆ2ç¨®é¡ã®æ”»æ’ƒã¨2ç¨®é¡ã®äº¤æ›¿ï¼‰   def random_action(self, player_monsters):
         valid_actions = get_valid_actions(player_monsters)
 
-        # Šes“®‚ğ“¯—l‚ÉŠm‚©‚ç‚µ‚¢‚Æ‚·‚é
+        # å„è¡Œå‹•ã‚’åŒæ§˜ã«ç¢ºã‹ã‚‰ã—ã„ã¨ã™ã‚‹
         action_probability = 1.0 / len(valid_actions) if valid_actions else 0
         return [(action, action_probability) for action in valid_actions]
         
     def reset(self):
-        # ƒ‚ƒ“ƒXƒ^[‚Ì‰Šúó‘Ô‚ğƒRƒs[
+        # ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®åˆæœŸçŠ¶æ…‹ã‚’ã‚³ãƒ”ãƒ¼
         self.player_monsters = deepcopy(self.initial_player_monsters)
         self.ai_monsters = deepcopy(self.initial_ai_monsters)
     
-        # state‚ğÄŒvZ
+        # stateã‚’å†è¨ˆç®—
         self.state = self._convert_to_state(self.player_monsters, self.ai_monsters)
     
         return self.state
         
     def render(self, mode='human'):
-        # Œ»İ‚Ìó‘Ô‚ğƒeƒLƒXƒg‚Å•\¦‚·‚é
-        print("Œ»İ‚Ìó‘Ô:")
-        print("ƒvƒŒƒCƒ„[‚Ìƒ‚ƒ“ƒXƒ^[:", self.player_monsters)
-        print("AI‚Ìƒ‚ƒ“ƒXƒ^[:", self.ai_monsters)
+        # ç¾åœ¨ã®çŠ¶æ…‹ã‚’ãƒ†ã‚­ã‚¹ãƒˆã§è¡¨ç¤ºã™ã‚‹
+        print("Current State:")
+        print("Player Monster:", self.player_monsters)
+        print("Ai Monster:", self.ai_monsters)
 
     
 
@@ -37,16 +37,16 @@ class GameEnvironment(gym.Env):
     def _convert_to_state(self, player_monsters, ai_monsters):
         state = []
         for monster in player_monsters + ai_monsters:
-            # ƒ‚ƒ“ƒXƒ^[‚Ì“Á’¥‚ğ’Ç‰Á
+            # ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®ç‰¹å¾´ã‚’è¿½åŠ 
             state.append(self._convert_monster_to_features(monster))
         return state
     
     def _convert_monster_to_features(self, monster):
-        # ƒ‚ƒ“ƒXƒ^[‚Ìƒ^ƒCƒv‚ğ”’l‚É•ÏŠ·
+        # ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®ã‚¿ã‚¤ãƒ—ã‚’æ•°å€¤ã«å¤‰æ›
         type_to_number = {"Grass": 0, "Fire": 1, "Water": 2}
         type_num = type_to_number[monster[0]]
     
-        # ƒ‚ƒ“ƒXƒ^[‚Ì‘Ì—Í
+        # ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®ä½“åŠ›
         hp = monster[1]
     
         return [type_num, hp]
@@ -54,29 +54,29 @@ class GameEnvironment(gym.Env):
     def calculate_next_states_and_probabilities(self, ai_action):
         player_monsters, ai_monsters = deepcopy(self.player_monsters , self.ai_monsters)
 
-        # ƒvƒŒƒCƒ„[‚Ì‡–@è‚Æ‘I‘ğŠm—¦‚ğæ“¾
+        # ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæ³•æ‰‹ã¨é¸æŠç¢ºç‡ã‚’å–å¾—
         player_actions_with_select_probs = self.random_action(player_monsters)
         
-        # ‡–@è‚ÆAI‚Ìs“®‚©‚çs“®‘g‚İ‡‚í‚¹‚Æ‘I‘ğŠm—¦‚ğì¬
+        # åˆæ³•æ‰‹ã¨AIã®è¡Œå‹•ã‹ã‚‰è¡Œå‹•çµ„ã¿åˆã‚ã›ã¨é¸æŠç¢ºç‡ã‚’ä½œæˆ
         action_combinations_with_select_probs = [(player_action, ai_action, select_prob) for player_action, select_prob in player_actions_with_select_probs]
 
         next_states_and_probs = []
         for player_action, ai_action, select_prob in action_combinations_with_select_probs:
             action_order = determine_action_order(player_action, ai_action)
 
-            # UŒ‚‚ªˆê‚ÂˆÈ‰º‚Ìê‡‚Ìˆ—
+            # æ”»æ’ƒãŒä¸€ã¤ä»¥ä¸‹ã®å ´åˆã®å‡¦ç†
             if sum(action in ["special_attack", "normal_attack"] for _, action in action_order) <= 1:
                 temp_player_monsters, temp_ai_monsters = self.apply_actions(player_monsters, ai_monsters, action_order)
                 next_states_and_probs.append(((temp_player_monsters, temp_ai_monsters), select_prob))
 
-            # UŒ‚‚ª“ñ‚Â‚ ‚éê‡‚Ìˆ—
+            # æ”»æ’ƒãŒäºŒã¤ã‚ã‚‹å ´åˆã®å‡¦ç†
             elif sum(action in ["special_attack", "normal_attack"] for _, action in action_order) == 2:
-                # ƒVƒiƒŠƒI1: ƒvƒŒƒCƒ„[æU
+                # ã‚·ãƒŠãƒªã‚ª1: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å…ˆæ”»
                 temp_player_monsters, temp_ai_monsters = self.apply_actions(player_monsters, ai_monsters, action_order)
                 next_states_and_probs.append(((temp_player_monsters, temp_ai_monsters), select_prob * 0.5))
 
-                # ƒVƒiƒŠƒI2: AIæU
-                player_monsters, ai_monsters = deepcopy(state)  # ó‘Ô‚ğƒŠƒZƒbƒg
+                # ã‚·ãƒŠãƒªã‚ª2: AIå…ˆæ”»
+                player_monsters, ai_monsters = deepcopy(state)  # çŠ¶æ…‹ã‚’ãƒªã‚»ãƒƒãƒˆ
                 action_order.reverse()
                 temp_player_monsters, temp_ai_monsters = self.apply_actions(player_monsters, ai_monsters, action_order)
                 next_states_and_probs.append(((temp_player_monsters, temp_ai_monsters), select_prob * 0.5))
@@ -84,7 +84,7 @@ class GameEnvironment(gym.Env):
         return next_states_and_probs
         
     def apply_actions(self, player_monsters, ai_monsters, action_order):
-        # —^‚¦‚ç‚ê‚½s“®‡˜‚É]‚Á‚Äs“®‚ğ“K—p
+        # ä¸ãˆã‚‰ã‚ŒãŸè¡Œå‹•é †åºã«å¾“ã£ã¦è¡Œå‹•ã‚’é©ç”¨
         temp_player_monsters, temp_ai_monsters = deepcopy(player_monsters), deepcopy(ai_monsters)
         for side, action in action_order:
             if action.startswith("switch"):
@@ -108,10 +108,10 @@ class GameEnvironment(gym.Env):
             if cumulative_prob >= rand_prob:
                 return next_state
     
-        return next_states_and_probs[-1][0]  # –œ‚ªˆê‚Ìê‡AÅŒã‚Ì—v‘f‚ğ•Ô‚·
+        return next_states_and_probs[-1][0]  # ä¸‡ãŒä¸€ã®å ´åˆã€æœ€å¾Œã®è¦ç´ ã‚’è¿”ã™
         
     def calculate_reward(self, next_state):
-        # ’è”‚Ìİ’è
+        # å®šæ•°ã®è¨­å®š
         WIN_REWARD = 100
         LOSE_REWARD = -100
         DAMAGE_REWARD_FACTOR = 50
@@ -119,13 +119,13 @@ class GameEnvironment(gym.Env):
         player_monsters, ai_monsters = self.player_monsters , self.ai_monsters
         next_player_monsters, next_ai_monsters = next_state
     
-        # 1. Ÿ”s•ñV
+        # 1. å‹æ•—å ±é…¬
         if all(hp <= 0 for _, hp in next_ai_monsters):
-            return WIN_REWARD  # Ÿ—˜
+            return WIN_REWARD  # å‹åˆ©
         elif all(hp <= 0 for _, hp in next_player_monsters):
-            return LOSE_REWARD  # ”s–k
+            return LOSE_REWARD  # æ•—åŒ—
     
-        # 2. ƒ_ƒ[ƒW•ñV
+        # 2. ãƒ€ãƒ¡ãƒ¼ã‚¸å ±é…¬
         damage_reward = DAMAGE_REWARD_FACTOR * (
             sum(hp for _, hp in player_monsters) - sum(hp for _, hp in next_player_monsters)
         )
@@ -133,7 +133,7 @@ class GameEnvironment(gym.Env):
             sum(hp for _, hp in ai_monsters) - sum(hp for _, hp in next_ai_monsters)
         )
     
-        # 3. ‘Î–Ê•ñV
+        # 3. å¯¾é¢å ±é…¬
         front_monster_advantage_reward = 0
         if is_advantageous(next_player_monsters[0], next_ai_monsters[0]):
             front_monster_advantage_reward += 10
@@ -143,7 +143,7 @@ class GameEnvironment(gym.Env):
         return damage_reward - damage_taken_reward + front_monster_advantage_reward
         
     def step(self, action):
-        # Ÿ‚Ìó‘Ô‚Æ•ñV‚ğŒvZ‚·‚é
+        # æ¬¡ã®çŠ¶æ…‹ã¨å ±é…¬ã‚’è¨ˆç®—ã™ã‚‹
         next_states_and_probs = self.calculate_next_states_and_probabilities(action)
         next_state = self.select_randomly_based_on_probability(next_states_and_probs)
         reward = self.calculate_reward(next_state)
@@ -151,21 +151,21 @@ class GameEnvironment(gym.Env):
         return next_state, reward
         
     def is_done(next_state):
-        # Ÿ‚Ìó‘Ô‚Ìƒ‚ƒ“ƒXƒ^[‚Ìó‘Ô‚ğæ“¾
+        # æ¬¡ã®çŠ¶æ…‹ã®ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®çŠ¶æ…‹ã‚’å–å¾—
         next_player_monsters, next_ai_monsters = next_state
     
-        # ƒvƒŒƒCƒ„[‚Ìƒ‚ƒ“ƒXƒ^[‚ª‘S‚Ä“|‚³‚ê‚½‚©‚Ç‚¤‚©
+        # ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ãŒå…¨ã¦å€’ã•ã‚ŒãŸã‹ã©ã†ã‹
         player_all_fainted = all(hp <= 0 for _, hp in next_player_monsters)
     
-        # AI‚Ìƒ‚ƒ“ƒXƒ^[‚ª‘S‚Ä“|‚³‚ê‚½‚©‚Ç‚¤‚©
+        # AIã®ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ãŒå…¨ã¦å€’ã•ã‚ŒãŸã‹ã©ã†ã‹
         ai_all_fainted = all(hp <= 0 for _, hp in next_ai_monsters)
     
-        # ‚Ç‚¿‚ç‚©‚ª‘S‚Ä“|‚³‚ê‚½ê‡AƒQ[ƒ€I—¹
+        # ã©ã¡ã‚‰ã‹ãŒå…¨ã¦å€’ã•ã‚ŒãŸå ´åˆã€ã‚²ãƒ¼ãƒ çµ‚äº†
         return player_all_fainted or ai_all_fainted
         
 def is_advantageous(monster1, monster2):
-    # ƒ‚ƒ“ƒXƒ^[ŠÔ‚Ì—L—˜•s—˜‚ğ”»’f‚·‚éŠÖ”
-    # monster1‚Æmonster2‚Í‚»‚ê‚¼‚êƒ‚ƒ“ƒXƒ^[‚Ìƒ^ƒCƒv‚ğ•\‚·•¶š—ñ
+    # ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼é–“ã®æœ‰åˆ©ä¸åˆ©ã‚’åˆ¤æ–­ã™ã‚‹é–¢æ•°
+    # monster1ã¨monster2ã¯ãã‚Œãã‚Œãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®ã‚¿ã‚¤ãƒ—ã‚’è¡¨ã™æ–‡å­—åˆ—
 
     advantage_dict = {
         "Grass": "Water",
@@ -174,6 +174,6 @@ def is_advantageous(monster1, monster2):
     }
 
     if advantage_dict[monster1[0]] == monster2[0]:
-        return True  # monster1‚Ímonster2‚É‘Î‚µ‚Ä—L—˜
+        return True  # monster1ã¯monster2ã«å¯¾ã—ã¦æœ‰åˆ©
     else:
-        return False  # monster1‚Ímonster2‚É‘Î‚µ‚Ä•s—˜
+        return False  # monster1ã¯monster2ã«å¯¾ã—ã¦ä¸åˆ©
