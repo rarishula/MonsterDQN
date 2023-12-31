@@ -63,7 +63,9 @@ class GameEnvironment(gym.Env):
         return [type_num, hp]
                 
     def calculate_next_states_and_probabilities(self, ai_action):
-        player_monsters, ai_monsters = deepcopy(self.player_monsters , self.ai_monsters)
+        player_monsters = deepcopy(self.player_monsters)
+        ai_monsters = deepcopy(self.ai_monsters)
+
 
         # プレイヤーの合法手と選択確率を取得
         player_actions_with_select_probs = self.random_action(player_monsters)
