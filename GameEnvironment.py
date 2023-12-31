@@ -32,6 +32,7 @@ class GameEnvironment(gym.Env):
     
         # stateを再計算
         self.state = self._convert_to_state(self.player_monsters, self.ai_monsters)
+        flat_state = [feature for monster in self.state for feature in monster]
     
         return np.array(self.state)
         
