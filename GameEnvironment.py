@@ -160,6 +160,16 @@ class GameEnvironment(gym.Env):
         return damage_reward - damage_taken_reward + front_monster_advantage_reward
         
     def step(self, action):
+        # 整数のactionを文字列に変換
+        if action == 0:
+            ai_action = "special_attack"
+        elif action == 1:
+            ai_action = "normal_attack"
+        elif action == 2:
+            ai_action = "switch_monster_1"
+        elif action == 3:
+            ai_action = "switch_monster_2"
+
         # 次の状態と報酬を計算する
         next_states_and_probs = self.calculate_next_states_and_probabilities(action)
         next_state = self.select_randomly_based_on_probability(next_states_and_probs)
