@@ -13,7 +13,7 @@ class GameEnvironment(gym.Env):
 
         # 状態スペースのサイズを設定（プレイヤーとAIのモンスターを合わせた数）
         self.state_size = len(self.initial_player_monsters) * 2  # 各モンスターは2つの属性（タイプとHP）を持つ
-        observation_space = MultiDiscrete([3, 7, 3, 7, 3, 7, 3, 7, 3, 7, 3, 7])# 例: モンスターの種類が 3 種類、体力が 0 から 6 の範囲
+        self.observation_space = MultiDiscrete([3, 7, 3, 7, 3, 7, 3, 7, 3, 7, 3, 7])# 例: モンスターの種類が 3 種類、体力が 0 から 6 の範囲
 
         # アクションスペースを設定（交替と攻撃の選択肢）
         self.action_space = gym.spaces.Discrete(4)  # 4つの行動（2種類の攻撃と2種類の交替）
