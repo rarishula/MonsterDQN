@@ -17,6 +17,16 @@ class GameEnvironment(gym.Env):
 
         # アクションスペースを設定（交替と攻撃の選択肢）
         self.action_space = gym.spaces.Discrete(4)  # 4つの行動（2種類の攻撃と2種類の交替）
+
+
+    def determine_action_order(player_action, ai_action):
+        # 特殊ケース: 両方が攻撃アクションの場合、ランダムに順序を決定
+        if player_action in ["special_attack", "normal_attack"] and ai_action in ["special_attack", "normal_attack"]:
+            return sorted([("player", player_action), ("ai", ai_action)], key=lambda x: random.random())
+        # それ以外の場合、'switch'アクションを優先
+        else:
+            actions = [("player", player_action), ("ai", ai_action)]
+            return sorted(actions, key=lambda x: 0 if "switch" in x[1] else 1)
         
     def random_action(self, player_monsters):
         valid_actions = get_valid_actions(player_monsters)
