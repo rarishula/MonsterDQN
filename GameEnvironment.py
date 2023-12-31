@@ -30,11 +30,11 @@ class GameEnvironment(gym.Env):
         self.player_monsters = deepcopy(self.initial_player_monsters)
         self.ai_monsters = deepcopy(self.initial_ai_monsters)
     
-        # stateを再計算
+        # stateを再計算（平坦化して1次元の長さ12の配列にする）
         self.state = self._convert_to_state(self.player_monsters, self.ai_monsters)
         flat_state = [feature for monster in self.state for feature in monster]
     
-        return np.array(self.state)
+        return flat_state
         
     def render(self, mode='human'):
         # 現在の状態をテキストで表示する
