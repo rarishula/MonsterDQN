@@ -90,7 +90,8 @@ class GameEnvironment(gym.Env):
                 next_states_and_probs.append(((temp_player_monsters, temp_ai_monsters), select_prob * 0.5))
 
                 # シナリオ2: AI先攻
-                player_monsters, ai_monsters = deepcopy(state)  # 状態をリセット
+                player_monsters = deepcopy(self.player_monsters)
+                ai_monsters = deepcopy(self.ai_monsters)
                 action_order.reverse()
                 temp_player_monsters, temp_ai_monsters = self.apply_actions(player_monsters, ai_monsters, action_order)
                 next_states_and_probs.append(((temp_player_monsters, temp_ai_monsters), select_prob * 0.5))
