@@ -179,3 +179,13 @@ def is_advantageous(monster1, monster2):
         return True  # monster1はmonster2に対して有利
     else:
         return False  # monster1はmonster2に対して不利
+
+def get_valid_actions(monsters):
+    valid_actions = ["special_attack", "normal_attack"]
+
+    # 各モンスターについて交替が可能かどうかをチェック
+    for i, (monster_type, hp) in enumerate(monsters):
+        if i != 0 and hp > 0:
+            valid_actions.append(f"switch_{monster_type}")
+
+    return valid_actions
