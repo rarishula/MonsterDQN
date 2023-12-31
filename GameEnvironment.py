@@ -1,3 +1,5 @@
+import gym
+
 class GameEnvironment(gym.Env):
     def __init__(self):
         # プレイヤーとAIの初期モンスターを設定
