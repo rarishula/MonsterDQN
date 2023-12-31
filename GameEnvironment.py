@@ -76,6 +76,9 @@ class GameEnvironment(gym.Env):
 
         next_states_and_probs = []
         for player_action, ai_action, select_prob in action_combinations_with_select_probs:
+                # ここで player_action と ai_action の型と内容を出力
+            print(f"player_action: {player_action}, type: {type(player_action)}")
+            print(f"ai_action: {ai_action}, type: {type(ai_action)}")
             action_order = determine_action_order(player_action, ai_action)
 
             # 攻撃が一つ以下の場合の処理
