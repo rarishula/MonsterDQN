@@ -3,6 +3,7 @@ from gym.spaces import MultiDiscrete
 import random
 from copy import deepcopy
 import math
+import numpy as np
 
 class GameEnvironment(gym.Env):
     def __init__(self):
