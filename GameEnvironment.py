@@ -245,3 +245,29 @@ def process_switch(side, action, player_monsters, ai_monsters):
         else:
             new_monster_index = next(i for i, (monster_type, _) in enumerate(ai_monsters) if monster_type == switch_to)
             ai_monsters[0], ai_monsters[new_monster_index] = ai_monsters[new_monster_index], ai_monsters[0]
+
+def calculate_and_apply_damage(attacker_monsters, defender_monsters, action):
+    # モンスターリストのディープコピーを作成
+    attacker_monsters_copy = deepcopy(attacker_monsters)
+    defender_monsters_copy = deepcopy(defender_monsters)
+
+    attacker_type = attacker_monsters_copy[0][0]
+    defender_type = defender_monsters_copy[0][0]
+
+    # ダメージの計算
+    damage = 0
+    if action == "special_attack":
+        if (attacker_type == "Grass" and defender_type == "Water") or \
+           (attacker_type == "Water" and defender_type == "Fire") or \
+           (attacker_type == "Fire" and defender_type == "Grass"):
+            damage = 6
+        else:
+            damage = 1
+    elif action == "normal_attack":
+        damage = 2
+
+    # ダメージの適用
+    defender_monsters_copy[0] = (defender_monsters_copy[0][0], max(defender_monsters_copy[0][1] - damage, 0))
+
+    # 変更されたコピーを返す
+    return attacker_monsters_copy, defender_monsters_copy, damage
