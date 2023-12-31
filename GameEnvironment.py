@@ -167,11 +167,7 @@ class GameEnvironment(gym.Env):
         elif action == 3:
             ai_action = "switch_monster_2"
     
-        print(f"ai_action: {action}, type: {type(action)}")
-    
-        # ai_monstersとplayer_monstersの形式を確認
-        print(f"ai_monsters: {self.ai_monsters}, type: {type(self.ai_monsters)}")
-        print(f"player_monsters: {self.player_monsters}, type: {type(self.player_monsters)}")
+        
         
 
         # 次の状態と報酬を計算する
@@ -235,6 +231,12 @@ def determine_action_order(player_action, ai_action):
         return sorted(actions, key=lambda x: 0 if "switch" in x[1] else 1)
 
 def process_switch(side, action, player_monsters, ai_monsters):
+    # actionの形式を確認
+    print(f"ai_action: {action}, type: {type(action)}")
+
+    # ai_monstersとplayer_monstersの形式を確認
+    print(f"ai_monsters: {ai_monsters}, type: {type(ai_monsters)}")
+    print(f"player_monsters: {player_monsters}, type: {type(player_monsters)}")
     if "switch" in action:
         switch_to = action.split("_")[1]
         if side == "player":
