@@ -226,3 +226,13 @@ def determine_action_order(player_action, ai_action):
     else:
         actions = [("player", player_action), ("ai", ai_action)]
         return sorted(actions, key=lambda x: 0 if "switch" in x[1] else 1)
+
+def process_switch(side, action, player_monsters, ai_monsters):
+    if "switch" in action:
+        switch_to = action.split("_")[1]
+        if side == "player":
+            new_monster_index = next(i for i, (monster_type, _) in enumerate(player_monsters) if monster_type == switch_to)
+            player_monsters[0], player_monsters[new_monster_index] = player_monsters[new_monster_index], player_monsters[0]
+        else:
+            new_monster_index = next(i for i, (monster_type, _) in enumerate(ai_monsters) if monster_type == switch_to)
+            ai_monsters[0], ai_monsters[new_monster_index] = ai_monsters[new_monster_index], ai_monsters[0]
