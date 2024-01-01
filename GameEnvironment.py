@@ -175,9 +175,7 @@ class GameEnvironment(gym.Env):
         print(next_state)
         player_monsters, ai_monsters = next_state
         done = end_of_turn(player_monsters, ai_monsters)
-        print(player_monsters)
-        print(ai_monsters)
-        next_state = [item for sublist in [player_monsters, ai_monsters] for item in sublist]  # 次の状態の作成
+        next_state = player_monsters + ai_monsters
 
         reward = self.calculate_reward(next_state)
 
