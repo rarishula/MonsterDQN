@@ -1,21 +1,21 @@
-# ¡‚Ü‚Åì¬‚µ‚½ƒQ[ƒ€‚ÌƒR[ƒh‘S‘Ì‚ğ•\¦
+# ä»Šã¾ã§ä½œæˆã—ãŸã‚²ãƒ¼ãƒ ã®ã‚³ãƒ¼ãƒ‰å…¨ä½“ã‚’è¡¨ç¤º
 import random
 from copy import deepcopy
 import math
-import pdb  # Python Debugger ‚ğƒCƒ“ƒ|[ƒg
+import pdb  # Python Debugger ã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 
 
 
-# ƒ_ƒ[ƒWŒvZ‚Æ“K—pŠÖ”
+# ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ã¨é©ç”¨é–¢æ•°
 def calculate_and_apply_damage(attacker_monsters, defender_monsters, action):
-    # ƒ‚ƒ“ƒXƒ^[ƒŠƒXƒg‚ÌƒfƒB[ƒvƒRƒs[‚ğì¬
+    # ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ãƒªã‚¹ãƒˆã®ãƒ‡ã‚£ãƒ¼ãƒ—ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆ
     attacker_monsters_copy = deepcopy(attacker_monsters)
     defender_monsters_copy = deepcopy(defender_monsters)
 
     attacker_type = attacker_monsters_copy[0][0]
     defender_type = defender_monsters_copy[0][0]
 
-    # ƒ_ƒ[ƒW‚ÌŒvZ
+    # ãƒ€ãƒ¡ãƒ¼ã‚¸ã®è¨ˆç®—
     damage = 0
     if action == "special_attack":
         if (attacker_type == "Grass" and defender_type == "Water") or \
@@ -27,15 +27,15 @@ def calculate_and_apply_damage(attacker_monsters, defender_monsters, action):
     elif action == "normal_attack":
         damage = 2
 
-    # ƒ_ƒ[ƒW‚Ì“K—p
+    # ãƒ€ãƒ¡ãƒ¼ã‚¸ã®é©ç”¨
     defender_monsters_copy[0] = (defender_monsters_copy[0][0], max(defender_monsters_copy[0][1] - damage, 0))
 
-    # •ÏX‚³‚ê‚½ƒRƒs[‚ğ•Ô‚·
+    # å¤‰æ›´ã•ã‚ŒãŸã‚³ãƒ”ãƒ¼ã‚’è¿”ã™
     return attacker_monsters_copy, defender_monsters_copy, damage
 
 
 
-# Œğ‘Öˆ—ŠÖ”
+# äº¤æ›¿å‡¦ç†é–¢æ•°
 def process_switch(side, action, player_monsters, ai_monsters):
     if "switch" in action:
         switch_to = action.split("_")[1]
@@ -50,11 +50,11 @@ def process_switch(side, action, player_monsters, ai_monsters):
 
 
 
-# ƒ^[ƒ“I—¹ŠÖ”
+# ã‚¿ãƒ¼ãƒ³çµ‚äº†é–¢æ•°
 def end_of_turn(player_monsters, ai_monsters, turn_count):
     turn_count += 1
 
-    # ‘Ì—Í‚ª0ˆÈ‰º‚Ìê‡‚ÌŒğ‘ãˆ—
+    # ä½“åŠ›ãŒ0ä»¥ä¸‹ã®å ´åˆã®äº¤ä»£å‡¦ç†
     for side, monsters in [("player", player_monsters), ("ai", ai_monsters)]:
         if monsters[0][1] <= 0:
             for i, (_, hp) in enumerate(monsters):
@@ -62,14 +62,14 @@ def end_of_turn(player_monsters, ai_monsters, turn_count):
                     monsters[0], monsters[i] = monsters[i], monsters[0]
                     break
 
-    # ƒ^[ƒ“I—¹‚Ìƒ‚ƒ“ƒXƒ^[‚Ì‘Ì—Íó‘Ô‚ğ•\¦
+    # ã‚¿ãƒ¼ãƒ³çµ‚äº†æ™‚ã®ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®ä½“åŠ›çŠ¶æ…‹ã‚’è¡¨ç¤º
     #print(f"End of Turn {turn_count} State:")
     #for monster in player_monsters:
     #    print(f"Player {monster[0]}: HP {monster[1]}")
     #for monster in ai_monsters:
     #    print(f"AI {monster[0]}: HP {monster[1]}")
 
-    # Ÿ”s”»’è
+    # å‹æ•—åˆ¤å®š
     player_all_fainted = all(hp <= 0 for _, hp in player_monsters)
     ai_all_fainted = all(hp <= 0 for _, hp in ai_monsters)
     if player_all_fainted and ai_all_fainted:
@@ -81,19 +81,19 @@ def end_of_turn(player_monsters, ai_monsters, turn_count):
     elif turn_count >= 20:
         return "draw", turn_count
 
-    return None, turn_count  # ƒQ[ƒ€‚ª‘±s‚·‚éê‡
+    return None, turn_count  # ã‚²ãƒ¼ãƒ ãŒç¶šè¡Œã™ã‚‹å ´åˆ
 
-# s“®‘I‘ğŠÖ”
+# è¡Œå‹•é¸æŠé–¢æ•°
 def select_random_action(monsters):
     valid_actions = get_valid_actions(monsters)
     return random.choice(valid_actions)
 
 
-# s“®—ñ‹“ŠÖ”
+# è¡Œå‹•åˆ—æŒ™é–¢æ•°
 def get_valid_actions(monsters):
     valid_actions = ["special_attack", "normal_attack"]
 
-    # Šeƒ‚ƒ“ƒXƒ^[‚É‚Â‚¢‚ÄŒğ‘Ö‚ª‰Â”\‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+    # å„ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã«ã¤ã„ã¦äº¤æ›¿ãŒå¯èƒ½ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
     for i, (monster_type, hp) in enumerate(monsters):
         if i != 0 and hp > 0:
             valid_actions.append(f"switch_{monster_type}")
@@ -102,7 +102,7 @@ def get_valid_actions(monsters):
 
 
 
-# s“®‘g‚İ‡‚í‚¹—ñ‹“ŠÖ”
+# è¡Œå‹•çµ„ã¿åˆã‚ã›åˆ—æŒ™é–¢æ•°
 
 def get_action_combinations(player_monsters, ai_monsters):
     player_actions = get_valid_actions(player_monsters)
@@ -150,18 +150,18 @@ class RandomGameSession:
 
 
 
-# s“®‡˜Œˆ’èŠÖ”
+# è¡Œå‹•é †åºæ±ºå®šé–¢æ•°
 def determine_action_order(player_action, ai_action):
-    # “ÁêƒP[ƒX: —¼•û‚ªUŒ‚ƒAƒNƒVƒ‡ƒ“‚Ìê‡Aƒ‰ƒ“ƒ_ƒ€‚É‡˜‚ğŒˆ’è
+    # ç‰¹æ®Šã‚±ãƒ¼ã‚¹: ä¸¡æ–¹ãŒæ”»æ’ƒã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®å ´åˆã€ãƒ©ãƒ³ãƒ€ãƒ ã«é †åºã‚’æ±ºå®š
     if player_action in ["special_attack", "normal_attack"] and ai_action in ["special_attack", "normal_attack"]:
         return sorted([("player", player_action), ("ai", ai_action)], key=lambda x: random.random())
-    # ‚»‚êˆÈŠO‚Ìê‡A'switch'ƒAƒNƒVƒ‡ƒ“‚ğ—Dæ
+    # ãã‚Œä»¥å¤–ã®å ´åˆã€'switch'ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å„ªå…ˆ
     else:
         actions = [("player", player_action), ("ai", ai_action)]
         return sorted(actions, key=lambda x: 0 if "switch" in x[1] else 1)
 
 
-# ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“
+# ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
 
 
 
@@ -189,7 +189,7 @@ class Node:
         return f'Node(Player Monsters: {self.player_monsters}, AI Monsters: {self.ai_monsters}, Action: {self.action}, Depth: {self.depth}, Selection Prob: {self.selection_probability}, Luck Prob: {self.luck_probability}, Wins: {self.wins}, Visits: {self.visits})'
 
     def get_action_combinations(self):
-        # ƒNƒ‰ƒXŠO‚É’è‹`‚³‚ê‚Ä‚¢‚é get_action_combinations ŠÖ”‚ğŒÄ‚Ño‚µ
+        # ã‚¯ãƒ©ã‚¹å¤–ã«å®šç¾©ã•ã‚Œã¦ã„ã‚‹ get_action_combinations é–¢æ•°ã‚’å‘¼ã³å‡ºã—
         return get_action_combinations(self.player_monsters, self.ai_monsters)
 
 
@@ -209,9 +209,9 @@ class Node:
             total_wins = sum(child.wins for child in group)
             total_visits = sum(child.visits for child in group)
 
-            # ƒOƒ‹[ƒv‘S‘Ì‚ÌUCT’l‚ğŒvZ
+            # ã‚°ãƒ«ãƒ¼ãƒ—å…¨ä½“ã®UCTå€¤ã‚’è¨ˆç®—
             if total_visits == 0:
-                group_uct_values[ai_action] = float('inf')  # –¢’TõƒOƒ‹[ƒv‚É‚‚¢—Dæ“x
+                group_uct_values[ai_action] = float('inf')  # æœªæ¢ç´¢ã‚°ãƒ«ãƒ¼ãƒ—ã«é«˜ã„å„ªå…ˆåº¦
             else:
                 win_rate = total_wins / total_visits
                 uct_value = win_rate + exploration_weight * math.sqrt(math.log(self.visits) / total_visits)
@@ -250,10 +250,10 @@ class Node:
     def add_children_nodes(self):
         action_combinations = self.get_action_combinations()
 
-        # Œ³‚Ìƒm[ƒh‚Ìó‘Ô‚ğƒRƒs[
+        # å…ƒã®ãƒãƒ¼ãƒ‰ã®çŠ¶æ…‹ã‚’ã‚³ãƒ”ãƒ¼
         original_player_monsters, original_ai_monsters = deepcopy(self.player_monsters), deepcopy(self.ai_monsters)
 
-        # ‘I‘ğŠm—¦‚Í“¯—l‚ÉŠm‚©‚ç‚µ‚¢‚Æ‚·‚é
+        # é¸æŠç¢ºç‡ã¯åŒæ§˜ã«ç¢ºã‹ã‚‰ã—ã„ã¨ã™ã‚‹
         if len(action_combinations) != 0:
             selection_probability = 1.0 / len(action_combinations)
         else:
@@ -262,7 +262,7 @@ class Node:
         for player_action, ai_action in action_combinations:
             action_order = determine_action_order(player_action, ai_action)
 
-            # UŒ‚‚ªˆê‚ÂˆÈ‰º‚Ìê‡A’Êí‚Ìs“®ˆ—
+            # æ”»æ’ƒãŒä¸€ã¤ä»¥ä¸‹ã®å ´åˆã€é€šå¸¸ã®è¡Œå‹•å‡¦ç†
             if sum(action in ["special_attack", "normal_attack"] for _, action in action_order) <= 1:
                 temp_player_monsters, temp_ai_monsters = deepcopy(original_player_monsters), deepcopy(original_ai_monsters)
                 for side, action in action_order:
@@ -276,9 +276,9 @@ class Node:
                 new_node = Node(temp_player_monsters, temp_ai_monsters, self, (player_action, ai_action), self.depth + 1, selection_probability, 1.0)
                 self.children.append(new_node)
 
-            # UŒ‚‚ª“ñ‚Â‚ ‚éê‡A—¼•û‚ÌƒVƒiƒŠƒI‚ğì¬
+            # æ”»æ’ƒãŒäºŒã¤ã‚ã‚‹å ´åˆã€ä¸¡æ–¹ã®ã‚·ãƒŠãƒªã‚ªã‚’ä½œæˆ
             if sum(action in ["special_attack", "normal_attack"] for _, action in action_order) == 2:
-                # ƒVƒiƒŠƒI1: ƒvƒŒƒCƒ„[æU
+                # ã‚·ãƒŠãƒªã‚ª1: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å…ˆæ”»
                 temp_player_monsters, temp_ai_monsters = deepcopy(original_player_monsters), deepcopy(original_ai_monsters)
                 for side, action in action_order:
                     if action in ["special_attack", "normal_attack"]:
@@ -289,9 +289,9 @@ class Node:
                 new_node = Node(temp_player_monsters, temp_ai_monsters, self, (player_action, ai_action), self.depth + 1, selection_probability, 0.5)
                 self.children.append(new_node)
 
-                # ƒVƒiƒŠƒI2: AIæU
+                # ã‚·ãƒŠãƒªã‚ª2: AIå…ˆæ”»
                 temp_player_monsters, temp_ai_monsters = deepcopy(original_player_monsters), deepcopy(original_ai_monsters)
-                action_order.reverse()  # s“®‡˜‚ğ‹t‚É‚·‚é
+                action_order.reverse()  # è¡Œå‹•é †åºã‚’é€†ã«ã™ã‚‹
                 for side, action in action_order:
                     if action in ["special_attack", "normal_attack"]:
                         if side == "player":
@@ -305,56 +305,56 @@ class Node:
 
 
     def simulate_game(self):
-        # ƒQ[ƒ€ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚Ì‚½‚ß‚Éƒ‚ƒ“ƒXƒ^[‚Ìó‘Ô‚ÌƒfƒB[ƒvƒRƒs[‚ğì¬
+        # ã‚²ãƒ¼ãƒ ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®ãŸã‚ã«ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®çŠ¶æ…‹ã®ãƒ‡ã‚£ãƒ¼ãƒ—ã‚³ãƒ”ãƒ¼ã‚’ä½œæˆ
         player_monsters_copy = deepcopy(self.player_monsters)
         ai_monsters_copy = deepcopy(self.ai_monsters)
 
-        # RandomGameSession‚ÉƒRƒs[‚ğ“n‚·
+        # RandomGameSessionã«ã‚³ãƒ”ãƒ¼ã‚’æ¸¡ã™
         game_session = RandomGameSession(player_monsters_copy, ai_monsters_copy)
         return game_session.run_game()
 
     def is_fully_expanded(self):
-        # ƒQ[ƒ€‚ªI—¹‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
+        # ã‚²ãƒ¼ãƒ ãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
         if self.game_is_over():
             return True
 
-        # [‚³‚ªŠù’è‚Ì§ŒÀ‚É“’B‚µ‚Ä‚¢‚é‚©‚Ìƒ`ƒFƒbƒN
+        # æ·±ã•ãŒæ—¢å®šã®åˆ¶é™ã«åˆ°é”ã—ã¦ã„ã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯
         if self.depth >= MAX_DEPTH:
             return True
 
-        # qƒm[ƒh‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
+        # å­ãƒãƒ¼ãƒ‰ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
         return len(self.children) > 0
 
     def game_is_over(self):
-        # ƒvƒŒƒCƒ„[‚Ì‘Sƒ‚ƒ“ƒXƒ^[‚Ì‘Ì—Í‚ª0‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+        # ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¨ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®ä½“åŠ›ãŒ0ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
         player_defeated = all(hp <= 0 for _, hp in self.player_monsters)
 
-        # AI‚Ì‘Sƒ‚ƒ“ƒXƒ^[‚Ì‘Ì—Í‚ª0‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+        # AIã®å…¨ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ã®ä½“åŠ›ãŒ0ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
         ai_defeated = all(hp <= 0 for _, hp in self.ai_monsters)
 
-        # ‚Ç‚¿‚ç‚©‚ÌƒvƒŒƒCƒ„[‚Ìƒ‚ƒ“ƒXƒ^[‚ª‘S‚Ä“|‚³‚ê‚Ä‚¢‚½‚çƒQ[ƒ€I—¹
+        # ã©ã¡ã‚‰ã‹ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ¢ãƒ³ã‚¹ã‚¿ãƒ¼ãŒå…¨ã¦å€’ã•ã‚Œã¦ã„ãŸã‚‰ã‚²ãƒ¼ãƒ çµ‚äº†
         return player_defeated or ai_defeated
 
     def traverse(self):
-    # Œ»İ‚Ìƒm[ƒh‚ª[‚³‚Ì§ŒÀ‚É’B‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+    # ç¾åœ¨ã®ãƒãƒ¼ãƒ‰ãŒæ·±ã•ã®åˆ¶é™ã«é”ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
         if self.depth >= MAX_DEPTH:
             return self
 
-        # –¢’Tõ‚Ìs“®‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+        # æœªæ¢ç´¢ã®è¡Œå‹•ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
         if not self.is_fully_expanded():
-            # –¢’Tõ‚Ìs“®‚É‘Î‚·‚éV‚µ‚¢qƒm[ƒh‚ğ’Ç‰Á
+            # æœªæ¢ç´¢ã®è¡Œå‹•ã«å¯¾ã™ã‚‹æ–°ã—ã„å­ãƒãƒ¼ãƒ‰ã‚’è¿½åŠ 
             self.add_children_nodes()
 
-            # –¢’Tõ‚Ìqƒm[ƒh‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ‚µ‚Ä•Ô‚·
+            # æœªæ¢ç´¢ã®å­ãƒãƒ¼ãƒ‰ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸æŠã—ã¦è¿”ã™
             return random.choice(self.children)
 
         next_node = self.best_child()
-        if next_node is None:  # 'best_child'‚ªNone‚ğ•Ô‚·ê‡
-            return self  # ‚±‚êˆÈã’Tõ‚ği‚ß‚È‚¢
+        if next_node is None:  # 'best_child'ãŒNoneã‚’è¿”ã™å ´åˆ
+            return self  # ã“ã‚Œä»¥ä¸Šæ¢ç´¢ã‚’é€²ã‚ãªã„
         return next_node.traverse()
 
     def backpropagate(self, result):
-        # Œ»İ‚Ìƒm[ƒh‚©‚çeƒm[ƒh‚ÉŒü‚©‚Á‚ÄƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
+        # ç¾åœ¨ã®ãƒãƒ¼ãƒ‰ã‹ã‚‰è¦ªãƒãƒ¼ãƒ‰ã«å‘ã‹ã£ã¦ãƒãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ã‚²ãƒ¼ã‚·ãƒ§ãƒ³
         current_node = self
         while current_node is not None:
             current_node.visits += 1
@@ -363,10 +363,10 @@ class Node:
             current_node = current_node.parent
 
     def group_children_by_ai_action(self):
-        # AI‚Ìs“®‚²‚Æ‚Éqƒm[ƒh‚ğƒOƒ‹[ƒv‰»
+        # AIã®è¡Œå‹•ã”ã¨ã«å­ãƒãƒ¼ãƒ‰ã‚’ã‚°ãƒ«ãƒ¼ãƒ—åŒ–
         groups = {}
         for child in self.children:
-            ai_action = child.action[1]  # AI‚Ìs“®‚ğæ“¾
+            ai_action = child.action[1]  # AIã®è¡Œå‹•ã‚’å–å¾—
             if ai_action not in groups:
                 groups[ai_action] = []
             groups[ai_action].append(child)
@@ -384,18 +384,18 @@ class FullGameSimulation:
         self.turn_count = 0
 
     def play_turn(self):
-        # AI‚ÌÅ“K‚Ès“®‚ğŒˆ’è‚·‚é
+        # AIã®æœ€é©ãªè¡Œå‹•ã‚’æ±ºå®šã™ã‚‹
         root_node = Node(self.player_monsters, self.ai_monsters)
         best_child = MCTS(root_node)
         optimal_ai_action = best_child.action[1]
 
-        # ƒvƒŒƒCƒ„[‚Ìs“®‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ
+        # ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡Œå‹•ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸æŠ
         player_action = select_random_action(self.player_monsters)
 
-        # s“®‚Ì‡˜‚ğŒˆ’è
+        # è¡Œå‹•ã®é †åºã‚’æ±ºå®š
         action_order = determine_action_order(player_action, optimal_ai_action)
 
-        # Šes“®‚ğ“K—p
+        # å„è¡Œå‹•ã‚’é©ç”¨
         for side, action in action_order:
             if action.startswith("switch"):
                 process_switch(side, action, self.player_monsters, self.ai_monsters)
@@ -405,7 +405,7 @@ class FullGameSimulation:
                 else:
                     self.ai_monsters, self.player_monsters, _ = calculate_and_apply_damage(self.ai_monsters, self.player_monsters, action)
 
-        # ƒ^[ƒ“I—¹‚Ìˆ—
+        # ã‚¿ãƒ¼ãƒ³çµ‚äº†ã®å‡¦ç†
         self.turn_count += 1
         return end_of_turn(self.player_monsters, self.ai_monsters, self.turn_count)
 
@@ -421,11 +421,11 @@ class FullGameSimulation:
 def MCTS(root):
     NUMBER_OF_ITERATIONS = 1000
     for _ in range(NUMBER_OF_ITERATIONS):
-        node = root.traverse()  # ƒgƒ‰ƒo[ƒX‚µ‚Ä–¢’Tõ‚Ìƒm[ƒh‚ğŒ©‚Â‚¯‚é
-        result = node.simulate_game()  # ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ğÀs
-        node.backpropagate(result)  # Œ‹‰Ê‚ğŒ³‚ÉƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
+        node = root.traverse()  # ãƒˆãƒ©ãƒãƒ¼ã‚¹ã—ã¦æœªæ¢ç´¢ã®ãƒãƒ¼ãƒ‰ã‚’è¦‹ã¤ã‘ã‚‹
+        result = node.simulate_game()  # ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œ
+        node.backpropagate(result)  # çµæœã‚’å…ƒã«ãƒãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ã‚²ãƒ¼ã‚·ãƒ§ãƒ³
 
-    return root.best_child()  # Å“K‚Èqƒm[ƒh‚ğ‘I‘ğ
+    return root.best_child()  # æœ€é©ãªå­ãƒãƒ¼ãƒ‰ã‚’é¸æŠ
 
 
 
@@ -435,7 +435,7 @@ def MCTS(root):
 MAX_DEPTH = 10
 ai_win = 0
 
-for i in range(10):
+for i in range(1000):
     initial_player_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
     initial_ai_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
     simulation = FullGameSimulation(initial_player_monsters, initial_ai_monsters)
