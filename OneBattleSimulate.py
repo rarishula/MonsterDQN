@@ -38,8 +38,16 @@ def calculate_and_apply_damage(attacker_monsters, defender_monsters, action):
 
 # 交替処理関数
 def process_switch(side, action, player_monsters, ai_monsters):
+    # actionの形式を確認
+    print(f"side: {side}, type: {type(side)}")
+    print(f"action: {action}, type: {type(action)}")
+
+    # ai_monstersとplayer_monstersの形式を確認
+    print(f"ai_monsters: {ai_monsters}, type: {type(ai_monsters)}")
+    print(f"player_monsters: {player_monsters}, type: {type(player_monsters)}")
     if "switch" in action:
         switch_to = action.split("_")[1]
+        print(f"switch_to: {switch_to}, type: {type(switch_to)}")
         if side == "player":
             new_monster_index = next(i for i, (monster_type, _) in enumerate(player_monsters) if monster_type == switch_to)
             player_monsters[0], player_monsters[new_monster_index] = player_monsters[new_monster_index], player_monsters[0]
