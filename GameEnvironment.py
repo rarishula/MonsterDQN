@@ -42,6 +42,7 @@ class GameEnvironment(gym.Env):
         print("Current State:")
         print("Player Monster:", self.player_monsters)
         print("Ai Monster:", self.ai_monsters)
+        print("State:", self.state)
 
     
 
