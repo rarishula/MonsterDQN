@@ -19,7 +19,7 @@ model = DQN(MlpPolicy, env, learning_rate=1e-3, batch_size=32, buffer_size=50000
 model.learn(total_timesteps=50000)
 
 # Execute testing
-episodes = 100
+episodes = 1000
 env.reset_win_counts()  # 勝敗数のリセット
 for episode in range(episodes):
     obs = env.reset()
