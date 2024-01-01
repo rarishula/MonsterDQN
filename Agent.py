@@ -20,6 +20,7 @@ model.learn(total_timesteps=50000)
 
 # Execute testing
 episodes = 5
+env.reset_win_counts()  # 勝敗数のリセット
 for episode in range(episodes):
     obs = env.reset()
     done = False
