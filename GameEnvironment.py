@@ -172,38 +172,31 @@ class GameEnvironment(gym.Env):
         # 次の状態と報酬を計算する
         next_states_and_probs = self.calculate_next_states_and_probabilities(ai_action)
         next_state = self.select_randomly_based_on_probability(next_states_and_probs)
+        player_monsters, ai_monsters = next_state
+        done = end_of_turn(player_monsters, ai_monsters)
+        next_state = [item for sublist in [player_monsters, ai_monsters] for item in sublist]
+
         reward = self.calculate_reward(next_state)
 
-        # next_stateを平坦化して1次元の配列にする
+
         player_monsters, ai_monsters = next_state
         
         # next_stateを1次元の配列に平坦化する
         converted_next_state = self._convert_to_state(player_monsters, ai_monsters)
-        
+
         flat_next_state = [feature for monster in converted_next_state for feature in monster]
         self.state = flat_next_state
         self.player_monsters, self.ai_monsters = next_state
 
         # ゲームが終了したかどうかを判断する
-        done = is_done(next_state)
+        done = is_done(end_of_turn)
 
         # 追加情報（空の辞書）
         info = {}
 
         return self.state, reward, done, info
         
-def is_done(next_state):
-    # 次の状態のモンスターの状態を取得
-    next_player_monsters, next_ai_monsters = next_state
 
-    # プレイヤーのモンスターが全て倒されたかどうか
-    player_all_fainted = all(hp <= 0 for _, hp in next_player_monsters)
-
-    # AIのモンスターが全て倒されたかどうか
-    ai_all_fainted = all(hp <= 0 for _, hp in next_ai_monsters)
-
-    # どちらかが全て倒された場合、ゲーム終了
-    return player_all_fainted or ai_all_fainted
         
 def is_advantageous(monster1, monster2):
     # モンスター間の有利不利を判断する関数
@@ -278,3 +271,27 @@ def calculate_and_apply_damage(attacker_monsters, defender_monsters, action):
 
     # 変更されたコピーを返す
     return attacker_monsters_copy, defender_monsters_copy, damage
+    
+def end_of_turn(player_monsters, ai_monsters):
+
+    # 体力が0以下の場合の交代処理
+    for side, monsters in [("player", player_monsters), ("ai", ai_monsters)]:
+        if monsters[0][1] <= 0:
+            for i, (_, hp) in enumerate(monsters):
+                if hp > 0:
+                    monsters[0], monsters[i] = monsters[i], monsters[0]
+                    break
+
+
+    # 勝敗判定
+    player_all_fainted = all(hp <= 0 for _, hp in player_monsters)
+    ai_all_fainted = all(hp <= 0 for _, hp in ai_monsters)
+    if player_all_fainted and ai_all_fainted:
+        return "draw"
+    elif player_all_fainted:
+        return "ai"
+    elif ai_all_fainted:
+        return "player"
+
+
+    return None  # ゲームが続行する場合
