@@ -184,18 +184,18 @@ class GameEnvironment(gym.Env):
 
         return np.array(next_state), reward, done, info
         
-    def is_done(next_state):
-        # 次の状態のモンスターの状態を取得
-        next_player_monsters, next_ai_monsters = next_state
-    
-        # プレイヤーのモンスターが全て倒されたかどうか
-        player_all_fainted = all(hp <= 0 for _, hp in next_player_monsters)
-    
-        # AIのモンスターが全て倒されたかどうか
-        ai_all_fainted = all(hp <= 0 for _, hp in next_ai_monsters)
-    
-        # どちらかが全て倒された場合、ゲーム終了
-        return player_all_fainted or ai_all_fainted
+def is_done(next_state):
+    # 次の状態のモンスターの状態を取得
+    next_player_monsters, next_ai_monsters = next_state
+
+    # プレイヤーのモンスターが全て倒されたかどうか
+    player_all_fainted = all(hp <= 0 for _, hp in next_player_monsters)
+
+    # AIのモンスターが全て倒されたかどうか
+    ai_all_fainted = all(hp <= 0 for _, hp in next_ai_monsters)
+
+    # どちらかが全て倒された場合、ゲーム終了
+    return player_all_fainted or ai_all_fainted
         
 def is_advantageous(monster1, monster2):
     # モンスター間の有利不利を判断する関数
