@@ -251,7 +251,12 @@ def calculate_and_apply_damage(attacker_monsters, defender_monsters, action):
     defender_monsters_copy = deepcopy(defender_monsters)
 
     attacker_type = attacker_monsters_copy[0][0]
+    attacker_hp = attacker_monsters_copy[0][1]
     defender_type = defender_monsters_copy[0][0]
+
+    # 攻撃側モンスターの体力が0の場合、ダメージは0
+    if attacker_hp <= 0:
+        return attacker_monsters_copy, defender_monsters_copy, 0
 
     # ダメージの計算
     damage = 0
