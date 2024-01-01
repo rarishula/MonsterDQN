@@ -172,11 +172,11 @@ class GameEnvironment(gym.Env):
         # 次の状態と報酬を計算する
         next_states_and_probs = self.calculate_next_states_and_probabilities(ai_action)
         next_state = self.select_randomly_based_on_probability(next_states_and_probs)
-        print(next_state)
+
         player_monsters, ai_monsters = next_state
         done = end_of_turn(player_monsters, ai_monsters)
         next_state = (player_monsters, ai_monsters)
-        print(next_state)
+
         reward = self.calculate_reward(next_state)
 
 
