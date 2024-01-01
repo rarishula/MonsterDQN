@@ -167,14 +167,14 @@ class GameEnvironment(gym.Env):
             ai_action = "switch_1"
         elif action == 3:
             ai_action = "switch_2"
-    
-        
-        
 
         # 次の状態と報酬を計算する
         next_states_and_probs = self.calculate_next_states_and_probabilities(ai_action)
         next_state = self.select_randomly_based_on_probability(next_states_and_probs)
         reward = self.calculate_reward(next_state)
+
+        # next_stateを平坦化して1次元の配列にする
+        flat_next_state = [feature for monster in next_state for feature in monster]
 
         # ゲームが終了したかどうかを判断する
         done = is_done(next_state)
@@ -182,7 +182,7 @@ class GameEnvironment(gym.Env):
         # 追加情報（空の辞書）
         info = {}
 
-        return np.array(next_state), reward, done, info
+        return flat_next_state, reward, done, info
         
 def is_done(next_state):
     # 次の状態のモンスターの状態を取得
