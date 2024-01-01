@@ -216,11 +216,12 @@ def get_valid_actions(monsters):
     valid_actions = ["special_attack", "normal_attack"]
 
     # 各モンスターについて交替が可能かどうかをチェック
-    for i, (monster_type, hp) in enumerate(monsters):
+    for i, (_, hp) in enumerate(monsters):
         if i != 0 and hp > 0:
-            valid_actions.append(f"switch_{monster_type}")
+            valid_actions.append(f"switch_{i}")
 
     return valid_actions
+
     
 def determine_action_order(player_action, ai_action):
     # 特殊ケース: 両方が攻撃アクションの場合、ランダムに順序を決定
@@ -232,22 +233,17 @@ def determine_action_order(player_action, ai_action):
         return sorted(actions, key=lambda x: 0 if "switch" in x[1] else 1)
 
 def process_switch(side, action, player_monsters, ai_monsters):
-    # actionの形式を確認
-    print(f"side: {side}, type: {type(side)}")
-    print(f"action: {action}, type: {type(action)}")
-
-    # ai_monstersとplayer_monstersの形式を確認
-    print(f"ai_monsters: {ai_monsters}, type: {type(ai_monsters)}")
-    print(f"player_monsters: {player_monsters}, type: {type(player_monsters)}")
     if "switch" in action:
-        switch_to = int(action.split("_")[1])
-        print(f"switch_to: {switch_to}, type: {type(switch_to)}")
+        # actionから交替対象のモンスターのインデックスを取得
+        switch_to_index = int(action.split("_")[1])
+
         if side == "player":
-            new_monster_index = next(i for i, (monster_type, _) in enumerate(player_monsters) if monster_type == switch_to)
-            player_monsters[0], player_monsters[new_monster_index] = player_monsters[new_monster_index], player_monsters[0]
+            # プレイヤー側のモンスターを交替
+            player_monsters[0], player_monsters[switch_to_index] = player_monsters[switch_to_index], player_monsters[0]
         else:
-            new_monster_index = next(i for i, (monster_type, _) in enumerate(ai_monsters) if monster_type == switch_to)
-            ai_monsters[0], ai_monsters[new_monster_index] = ai_monsters[new_monster_index], ai_monsters[0]
+            # AI側のモンスターを交替
+            ai_monsters[0], ai_monsters[switch_to_index] = ai_monsters[switch_to_index], ai_monsters[0]
+
 
 def calculate_and_apply_damage(attacker_monsters, defender_monsters, action):
     # モンスターリストのディープコピーを作成
