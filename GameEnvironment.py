@@ -180,6 +180,7 @@ class GameEnvironment(gym.Env):
         converted_next_state = self._convert_to_state(player_monsters, ai_monsters)
         
         flat_next_state = [feature for monster in converted_next_state for feature in monster]
+        self.state = flat_next_state
 
         # ゲームが終了したかどうかを判断する
         done = is_done(next_state)
@@ -187,7 +188,7 @@ class GameEnvironment(gym.Env):
         # 追加情報（空の辞書）
         info = {}
 
-        return flat_next_state, reward, done, info
+        return self.state, reward, done, info
         
 def is_done(next_state):
     # 次の状態のモンスターの状態を取得
