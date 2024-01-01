@@ -164,9 +164,9 @@ class GameEnvironment(gym.Env):
         elif action == 1:
             ai_action = "normal_attack"
         elif action == 2:
-            ai_action = "switch_monster_1"
+            ai_action = "switch_1"
         elif action == 3:
-            ai_action = "switch_monster_2"
+            ai_action = "switch_2"
     
         
         
