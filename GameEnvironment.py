@@ -174,7 +174,12 @@ class GameEnvironment(gym.Env):
         reward = self.calculate_reward(next_state)
 
         # next_stateを平坦化して1次元の配列にする
-        flat_next_state = [feature for monster in next_state for feature in monster]
+        player_monsters, ai_monsters = next_state
+        
+        # next_stateを1次元の配列に平坦化する
+        converted_next_state = self._convert_to_state(player_monsters, ai_monsters)
+        
+        flat_next_state = [feature for monster in converted_next_state for feature in monster]
 
         # ゲームが終了したかどうかを判断する
         done = is_done(next_state)
