@@ -18,6 +18,11 @@ class GameEnvironment(gym.Env):
         # アクションスペースを設定（交替と攻撃の選択肢）
         self.action_space = gym.spaces.Discrete(4)  # 4つの行動（2種類の攻撃と2種類の交替）
 
+        self.player_wins = 0
+        self.ai_wins = 0
+        self.draws = 0
+
+
         
     def random_action(self, player_monsters):
         valid_actions = get_valid_actions(player_monsters)
@@ -42,10 +47,12 @@ class GameEnvironment(gym.Env):
         print("Current State:")
         print("Player Monster:", self.player_monsters)
         print("Ai Monster:", self.ai_monsters)
-        print("State:", self.state)
-
-    
-
+        
+        # 勝敗が決まった場合の表示
+        result = self.check_game_result()
+        if result:
+            print(f"Result: {result}")
+            print("Player Wins:", self.player_wins, "AI Wins:", self.ai_wins, "Draws:", self.draws)
         
     def _convert_to_state(self, player_monsters, ai_monsters):
         state = []
@@ -193,8 +200,34 @@ class GameEnvironment(gym.Env):
         # 追加情報（空の辞書）
         info = {}
 
+        if done == "player":
+            self.player_wins += 1
+        elif done == "ai":
+            self.ai_wins += 1
+        elif done == "draw":
+            self.draws += 1
+
         return self.state, reward, done, info
         
+    def reset_win_counts(self):
+        # 勝敗数をリセットする
+        self.player_wins = 0
+        self.ai_wins = 0
+        self.draws = 0
+
+    def check_game_result(self):
+        player_all_fainted = all(hp <= 0 for _, hp in self.player_monsters)
+        ai_all_fainted = all(hp <= 0 for _, hp in self.ai_monsters)
+
+        if player_all_fainted and ai_all_fainted:
+            return "draw"
+        elif player_all_fainted:
+            return "ai"
+        elif ai_all_fainted:
+            return "player"
+        return None  # ゲームが続行する場合
+
+
 
         
 def is_advantageous(monster1, monster2):
