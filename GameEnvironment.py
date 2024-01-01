@@ -175,7 +175,7 @@ class GameEnvironment(gym.Env):
         print(next_state)
         player_monsters, ai_monsters = next_state
         done = end_of_turn(player_monsters, ai_monsters)
-        next_state = player_monsters + ai_monsters
+        next_state = (player_monsters, ai_monsters)
         print(next_state)
         reward = self.calculate_reward(next_state)
 
