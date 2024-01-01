@@ -233,7 +233,8 @@ def determine_action_order(player_action, ai_action):
 
 def process_switch(side, action, player_monsters, ai_monsters):
     # actionの形式を確認
-    print(f"ai_action: {action}, type: {type(action)}")
+    print(f"side: {side}, type: {type(side)}")
+    print(f"action: {action}, type: {type(action)}")
 
     # ai_monstersとplayer_monstersの形式を確認
     print(f"ai_monsters: {ai_monsters}, type: {type(ai_monsters)}")
