@@ -182,6 +182,7 @@ class GameEnvironment(gym.Env):
         
         flat_next_state = [feature for monster in converted_next_state for feature in monster]
         self.state = flat_next_state
+        self.player_monsters, self.ai_monsters = next_state
 
         # ゲームが終了したかどうかを判断する
         done = is_done(next_state)
