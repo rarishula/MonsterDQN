@@ -241,6 +241,7 @@ def process_switch(side, action, player_monsters, ai_monsters):
     print(f"player_monsters: {player_monsters}, type: {type(player_monsters)}")
     if "switch" in action:
         switch_to = action.split("_")[1]
+        print(f"switch_to: {switch_to}, type: {type(switch_to)}")
         if side == "player":
             new_monster_index = next(i for i, (monster_type, _) in enumerate(player_monsters) if monster_type == switch_to)
             player_monsters[0], player_monsters[new_monster_index] = player_monsters[new_monster_index], player_monsters[0]
