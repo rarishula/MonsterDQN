@@ -44,9 +44,9 @@ class GameEnvironment(gym.Env):
         
     def render(self, mode='human'):
         # 現在の状態をテキストで表示する
-        print("Current State:")
-        print("Player Monster:", self.player_monsters)
-        print("Ai Monster:", self.ai_monsters)
+        #print("Current State:")
+        #print("Player Monster:", self.player_monsters)
+        #print("Ai Monster:", self.ai_monsters)
         
         # 勝敗が決まった場合の表示
         result = self.check_game_result()
