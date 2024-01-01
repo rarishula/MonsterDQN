@@ -189,8 +189,6 @@ class GameEnvironment(gym.Env):
         self.state = flat_next_state
         self.player_monsters, self.ai_monsters = next_state
 
-        # ゲームが終了したかどうかを判断する
-        done = is_done(end_of_turn)
 
         # 追加情報（空の辞書）
         info = {}
