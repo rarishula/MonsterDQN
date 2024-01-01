@@ -112,7 +112,7 @@ class GameEnvironment(gym.Env):
         return temp_player_monsters, temp_ai_monsters
         
 
-
+    @staticmethod
     def select_randomly_based_on_probability(next_states_and_probs):
         total_prob = sum(prob for _, prob in next_states_and_probs)
         rand_prob = random.uniform(0, total_prob)
