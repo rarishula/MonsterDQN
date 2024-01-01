@@ -10,7 +10,7 @@ from GameEnvironment import GameEnvironment
 env = GameEnvironment()
 
 # Construct the DQN agent
-model = DQN(MlpPolicy, env, learning_rate=1e-5, batch_size=320, buffer_size=500000, 
+model = DQN(MlpPolicy, env, learning_rate=1e-5, batch_size=32, buffer_size=50000, 
             learning_starts=10, gamma=0.95, target_update_interval=1000, 
             train_freq=4, gradient_steps=1, exploration_fraction=0.8, 
             exploration_initial_eps=1.0, exploration_final_eps=0.01)
