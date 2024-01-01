@@ -181,6 +181,7 @@ class GameEnvironment(gym.Env):
 
         # 追加情報（空の辞書）
         info = {}
+        print("flat_next_state:", flat_next_state)
 
         return flat_next_state, reward, done, info
         
