@@ -413,7 +413,7 @@ class FullGameSimulation:
         result = None
         while not result and self.turn_count < 20:
             result = self.play_turn()[0]
-            print(f'Player Monsters: {self.player_monsters}, AI Monsters: {self.ai_monsters}\n')
+            #print(f'Player Monsters: {self.player_monsters}, AI Monsters: {self.ai_monsters}\n')
 
         return result
 
