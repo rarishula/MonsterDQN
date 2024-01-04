@@ -7,7 +7,7 @@ from stable_baselines3.dqn.policies import MlpPolicy
 from GameEnvironment import GameEnvironment
 
 class DQNAgentTrainer:
-    def __init__(self, env, learning_rate=1e-5, batch_size=32, buffer_size=50000, 
+    def __init__(self, env, learning_rate=1e-3, batch_size=32, buffer_size=5000, 
                  learning_starts=10, gamma=0.95, target_update_interval=1000, 
                  train_freq=4, gradient_steps=1, exploration_fraction=0.8, 
                  exploration_initial_eps=1.0, exploration_final_eps=0.01):
@@ -21,7 +21,7 @@ class DQNAgentTrainer:
                          exploration_initial_eps=exploration_initial_eps, 
                          exploration_final_eps=exploration_final_eps)
 
-    def train(self, total_timesteps=50000):
+    def train(self, total_timesteps=5000):
         self.model.learn(total_timesteps=total_timesteps)
 
     def test(self, episodes=1000):
