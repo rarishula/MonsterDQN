@@ -140,8 +140,6 @@ class GameEnvironment(gym.Env):
         WIN_REWARD = 100
         LOSE_REWARD = -100
         DAMAGE_REWARD_FACTOR = self.damage_reward_range
-
-        print("damage = " ,DAMAGE_REWARD_FACTOR)
     
         player_monsters, ai_monsters = self.player_monsters , self.ai_monsters
         next_player_monsters, next_ai_monsters = next_state
@@ -166,7 +164,6 @@ class GameEnvironment(gym.Env):
             front_monster_advantage_reward += self.front_monster_advantage_reward_range
         elif is_advantageous(next_ai_monsters[0], next_player_monsters[0]):
             front_monster_advantage_reward -= self.front_monster_advantage_reward_range
-        print("advantage = " , front_monster_advantage_reward)
     
         return damage_reward - damage_taken_reward + front_monster_advantage_reward
         
@@ -211,6 +208,8 @@ class GameEnvironment(gym.Env):
             self.ai_wins += 1
         elif done == "draw":
             self.draws += 1
+
+        print(state)
 
         return self.state, reward, done, info
         
