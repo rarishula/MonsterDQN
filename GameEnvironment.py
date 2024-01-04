@@ -209,7 +209,7 @@ class GameEnvironment(gym.Env):
         elif done == "draw":
             self.draws += 1
 
-        print(state)
+        print(self.state)
 
         return self.state, reward, done, info
         
