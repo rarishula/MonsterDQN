@@ -35,7 +35,8 @@ class DQNAgentTrainer:
                 self.env.render()
 
 
-def main(damage_reward_range = 50, front_monster_advantage_reward_range = 10):
+#def main(damage_reward_range = 50, front_monster_advantage_reward_range = 10):
+def main()
     # カスタム環境の作成
     #env = GameEnvironment(damage_reward_range, front_monster_advantage_reward_range)
     env = GameEnvironment()
