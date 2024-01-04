@@ -6,7 +6,7 @@ import math
 import numpy as np
 
 class GameEnvironment(gym.Env):
-    def __init__(self):
+    def __init__(self,damage_reward_range, front_monster_advantage_reward_range):
         # プレイヤーとAIの初期モンスターを設定
         self.initial_player_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
         self.initial_ai_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
@@ -21,6 +21,8 @@ class GameEnvironment(gym.Env):
         self.player_wins = 0
         self.ai_wins = 0
         self.draws = 0
+        self.damage_reward_range = damage_reward_range
+        self.front_monster_advantage_reward_range = front_monster_advantage_reward_range
 
 
         
@@ -137,7 +139,7 @@ class GameEnvironment(gym.Env):
         # 定数の設定
         WIN_REWARD = 100
         LOSE_REWARD = -100
-        DAMAGE_REWARD_FACTOR = 50
+        DAMAGE_REWARD_FACTOR = self.damage_reward_range
     
         player_monsters, ai_monsters = self.player_monsters , self.ai_monsters
         next_player_monsters, next_ai_monsters = next_state
@@ -159,9 +161,9 @@ class GameEnvironment(gym.Env):
         # 3. 対面報酬
         front_monster_advantage_reward = 0
         if is_advantageous(next_player_monsters[0], next_ai_monsters[0]):
-            front_monster_advantage_reward += 10
+            front_monster_advantage_reward += self.front_monster_advantage_reward_range
         elif is_advantageous(next_ai_monsters[0], next_player_monsters[0]):
-            front_monster_advantage_reward -= 10
+            front_monster_advantage_reward -= self.front_monster_advantage_reward_range
     
         return damage_reward - damage_taken_reward + front_monster_advantage_reward
         
