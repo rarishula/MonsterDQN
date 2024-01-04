@@ -209,8 +209,6 @@ class GameEnvironment(gym.Env):
         elif done == "draw":
             self.draws += 1
 
-        print(self.state)
-
         return self.state, reward, done, info
         
     def reset_win_counts(self):
