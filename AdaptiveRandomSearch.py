@@ -47,7 +47,8 @@ initial_front_monster_advantage_reward_range = (0, 100)
 
 # アダプティブランダムサーチの実行
 best_win_rate, best_params = adaptive_random_search((initial_damage_reward_range, initial_front_monster_advantage_reward_range), 
-                                                    steps=100, 
+                                                    #steps=100,
+                                                    steps=2,
                                                     shrink_factor=0.5, 
                                                     expand_factor=1.2)
 
