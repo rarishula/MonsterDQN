@@ -5,8 +5,8 @@ from copy import deepcopy
 import math
 import numpy as np
 
-class GameEnvironment(gym.Env,damage_reward_range = 50, front_monster_advantage_reward_range = 10):
-    def __init__(self):
+class GameEnvironment(gym.Env):
+    def __init__(self,damage_reward_factor = 50, front_monster_advantage_reward_factor = 10):
         # プレイヤーとAIの初期モンスターを設定
         self.initial_player_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
         self.initial_ai_monsters = [("Grass", 6), ("Fire", 6), ("Water", 6)]
@@ -21,6 +21,8 @@ class GameEnvironment(gym.Env,damage_reward_range = 50, front_monster_advantage_
         self.player_wins = 0
         self.ai_wins = 0
         self.draws = 0
+        self.damage_reward_factor = damage_reward_factor
+        self.front_monster_advantage_factor = front_monster_advantage_reward_factor
 
 
         
