@@ -47,6 +47,8 @@ def main(damage_reward_factor = 50, front_monster_advantage_reward_factor = 10):
 
     # テストの実行
     agent_trainer.test(episodes=1000)
+    win_rate = env.ai_wins /(env.player_wins + env.ai_wins + env.self.draws) 
+    return env.ai_wins
 
 if __name__ == "__main__":
     main()
