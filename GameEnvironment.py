@@ -139,7 +139,7 @@ class GameEnvironment(gym.Env):
         # 定数の設定
         WIN_REWARD = 100
         LOSE_REWARD = -100
-        DAMAGE_REWARD_FACTOR = 50
+        #DAMAGE_REWARD_FACTOR = 50
     
         player_monsters, ai_monsters = self.player_monsters , self.ai_monsters
         next_player_monsters, next_ai_monsters = next_state
@@ -151,19 +151,19 @@ class GameEnvironment(gym.Env):
             return LOSE_REWARD  # 敗北
     
         # 2. ダメージ報酬
-        damage_reward = DAMAGE_REWARD_FACTOR * (
+        damage_reward = self.damage_reward_factor * (
             sum(hp for _, hp in player_monsters) - sum(hp for _, hp in next_player_monsters)
         )
-        damage_taken_reward = DAMAGE_REWARD_FACTOR * (
+        damage_taken_reward = self.damage_reward_factor * (
             sum(hp for _, hp in ai_monsters) - sum(hp for _, hp in next_ai_monsters)
         )
     
         # 3. 対面報酬
         front_monster_advantage_reward = 0
         if is_advantageous(next_player_monsters[0], next_ai_monsters[0]):
-            front_monster_advantage_reward += 10
+            front_monster_advantage_reward += self.front_monster_advantage_factor
         elif is_advantageous(next_ai_monsters[0], next_player_monsters[0]):
-            front_monster_advantage_reward -= 10
+            front_monster_advantage_reward -= self.front_monster_advantage_factor
     
         return damage_reward - damage_taken_reward + front_monster_advantage_reward
         
