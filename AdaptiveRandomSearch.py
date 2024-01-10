@@ -1,50 +1,51 @@
 import random
+from DQNAgent import main as dqn_agent
 
-def adaptive_random_search(initial_range, steps, shrink_factor, expand_factor):
-    # ƒpƒ‰ƒ[ƒ^‚Ì”ÍˆÍ‚ğ‰Šú‰»
-    damage_reward_range, front_monster_advantage_reward_range = initial_range
+def adaptive_random_search(initial_ranges, steps, shrink_factor, expand_factor):
+    # ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®åˆæœŸç¯„å›²
+    damage_reward_range, front_monster_advantage_reward_range = initial_ranges
 
     best_win_rate = 0
     best_params = None
 
     for _ in range(steps):
-        # ƒpƒ‰ƒ[ƒ^‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ
+        # å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸æŠ
         damage_reward = random.uniform(*damage_reward_range)
         front_monster_advantage_reward = random.uniform(*front_monster_advantage_reward_range)
 
-        # mainŠÖ”‚ğÀs‚µAŸ—¦‚ğæ“¾
-        win_rate = main(damage_reward, front_monster_advantage_reward)
+        # mainé–¢æ•°ã‚’å®Ÿè¡Œã—ã€å‹ç‡ã‚’å–å¾—
+        win_rate = dqn_agent(damage_reward, front_monster_advantage_reward)
 
-        # ‚à‚µV‚µ‚¢Ÿ—¦‚ª‚æ‚è—Ç‚¯‚ê‚ÎA”ÍˆÍ‚ğXV
+        # æ–°ã—ã„å‹ç‡ãŒã‚ˆã‚Šè‰¯ã‘ã‚Œã°ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç¯„å›²ã‚’æ›´æ–°
         if win_rate > best_win_rate:
             best_win_rate = win_rate
             best_params = (damage_reward, front_monster_advantage_reward)
 
-            # ”ÍˆÍ‚ğk¬
+            # å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç¯„å›²ã‚’ç¸®å°
             damage_reward_range = shrink_range(damage_reward_range, damage_reward, shrink_factor)
             front_monster_advantage_reward_range = shrink_range(front_monster_advantage_reward_range, front_monster_advantage_reward, shrink_factor)
         else:
-            # ”ÍˆÍ‚ğŠg‘å
+            # ç¯„å›²ã‚’æ‹¡å¤§
             damage_reward_range = expand_range(damage_reward_range, expand_factor)
             front_monster_advantage_reward_range = expand_range(front_monster_advantage_reward_range, expand_factor)
 
     return best_win_rate, best_params
 
+# ç¯„å›²ã‚’ç¸®å°ã™ã‚‹é–¢æ•°
 def shrink_range(current_range, current_value, factor):
-    """ ”ÍˆÍ‚ğk¬ """
     return (max(current_range[0], current_value - factor * (current_value - current_range[0])),
             min(current_range[1], current_value + factor * (current_range[1] - current_value)))
 
+# ç¯„å›²ã‚’æ‹¡å¤§ã™ã‚‹é–¢æ•°
 def expand_range(current_range, factor):
-    """ ”ÍˆÍ‚ğŠg‘å """
     return (current_range[0] - factor * (current_range[1] - current_range[0]),
             current_range[1] + factor * (current_range[1] - current_range[0]))
 
-# ‰Šú‚Ì”ÍˆÍİ’è
+# åˆæœŸã®ç¯„å›²è¨­å®š
 initial_damage_reward_range = (0, 100)
-initial_front_monster_advantage_reward_range = (0, 50)
+initial_front_monster_advantage_reward_range = (0, 100)
 
-# ƒAƒ_ƒvƒeƒBƒuƒ‰ƒ“ƒ_ƒ€ƒT[ƒ`‚ÌÀs
+# ã‚¢ãƒ€ãƒ—ãƒ†ã‚£ãƒ–ãƒ©ãƒ³ãƒ€ãƒ ã‚µãƒ¼ãƒã®å®Ÿè¡Œ
 best_win_rate, best_params = adaptive_random_search((initial_damage_reward_range, initial_front_monster_advantage_reward_range), 
                                                     steps=100, 
                                                     shrink_factor=0.5, 
